@@ -1,5 +1,6 @@
 package com.example.bookandroid.services
 
+import com.example.bookandroid.models.TransactionItemModel
 import com.example.bookandroid.models.UserModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -9,6 +10,8 @@ object RetrofitClient {
 
     var token: String = ""
     var user: UserModel? = null
+
+    var cart: ArrayList<TransactionItemModel> = arrayListOf()
 
     val service: RetrofitService by lazy {
         Retrofit.Builder()

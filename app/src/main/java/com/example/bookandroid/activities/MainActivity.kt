@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import com.example.bookandroid.R
 import com.example.bookandroid.databinding.ActivityMainBinding
-import com.example.bookandroid.fragments.CartFragment
 import com.example.bookandroid.fragments.HomeFragment
 import com.example.bookandroid.fragments.ProfileFragment
 import com.example.bookandroid.fragments.WishlistFragment
@@ -20,7 +19,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var homeFragment: HomeFragment
     private lateinit var wishlistFragment: WishlistFragment
-    private lateinit var cartFragment: CartFragment
     private lateinit var profileFragment: ProfileFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         }
         homeFragment = HomeFragment()
         wishlistFragment = WishlistFragment()
-        cartFragment = CartFragment()
         profileFragment = ProfileFragment()
         with(binding) {
             bottomNav.setOnItemSelectedListener {
@@ -46,10 +43,6 @@ class MainActivity : AppCompatActivity() {
 
                     R.id.menuWishlist -> {
                         changeFragment(wishlistFragment)
-                    }
-
-                    R.id.menuCart -> {
-                        changeFragment(cartFragment)
                     }
 
                     R.id.menuProfile -> {

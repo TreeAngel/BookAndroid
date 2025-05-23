@@ -11,10 +11,6 @@
         android:icon="@drawable/heart"
         android:title="Wishlist" />
     <item
-        android:id="@+id/menuCart"
-        android:icon="@drawable/shopping_cart"
-        android:title="Cart" />
-    <item
         android:id="@+id/menuProfile"
         android:icon="@drawable/person"
         android:title="Profile" />

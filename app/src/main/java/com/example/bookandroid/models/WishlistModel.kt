@@ -7,6 +7,8 @@ import android.os.Parcelable
 
 @Parcelize
 data class WishlistModel(
+    @SerializedName("id")
+    val id: Int,
     @SerializedName("createdAt")
     val createdAt: String,
     @SerializedName("book")

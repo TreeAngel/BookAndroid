@@ -53,10 +53,10 @@ interface RetrofitService {
     @GET("user/wishlist")
     suspend fun getWishlist(@Header("Authorization") token: String = RetrofitClient.token): Response<GetWishlistResponse>
 
-    @POST("user/wishlist")
+    @POST("user/wishlist/{bookId}")
     suspend fun postWishlist(
         @Header("Authorization") token: String = RetrofitClient.token,
-        @Body bookId: Int
+        @Path("bookId") bookId: Int
     ): Response<GeneralResponse>
 
     @DELETE("user/wishlist/{id}")

@@ -1,8 +1,6 @@
 package com.example.bookandroid.models.request
 
 
-import com.google.gson.annotations.SerializedName
-import kotlinx.parcelize.Parcelize
-import android.os.Parcelable
+import com.example.bookandroid.models.TransactionItemModel
 
-class PostTransactionRequest : ArrayList<PostTransactionRequestItem>()
+class PostTransactionRequest : ArrayList<TransactionItemModel>()
