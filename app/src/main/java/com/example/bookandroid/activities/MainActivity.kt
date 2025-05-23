@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                 true
             }
         }
+        changeFragment(homeFragment)
     }
 
     private fun changeFragment(fragment: Fragment) {

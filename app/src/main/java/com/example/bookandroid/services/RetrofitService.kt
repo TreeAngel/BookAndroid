@@ -32,8 +32,8 @@ interface RetrofitService {
     @GET("book/genres")
     suspend fun getGenres(): Response<GetGenresResponse>
 
-    @GET("book?genreName={genreName}")
-    suspend fun getBooks(@Query("genreName") genreName: String? = null): Response<GetBooksResponse>
+    @GET("book")
+    suspend fun getBooks(@Query("genreName") genreName: String?): Response<GetBooksResponse>
 
     @GET("book/{bookId}")
     suspend fun getBook(@Path("bookId") bookId: Int): Response<GetBookResponse>
@@ -50,7 +50,7 @@ interface RetrofitService {
         @Body request: UpdateProfileRequest
     ): Response<UpdateUserResponse>
 
-    @GET("user/wishlist")
+    @GET("user/withlist")
     suspend fun getWishlist(@Header("Authorization") token: String = RetrofitClient.token): Response<GetWishlistResponse>
 
     @POST("user/wishlist/{bookId}")

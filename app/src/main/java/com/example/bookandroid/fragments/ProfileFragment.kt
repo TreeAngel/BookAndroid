@@ -1,60 +1,117 @@
 package com.example.bookandroid.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.bookandroid.R
+import com.example.bookandroid.databinding.FragmentProfileBinding
+import com.example.bookandroid.models.UserModel
+import com.example.bookandroid.models.request.LoginRequest
+import com.example.bookandroid.services.RetrofitClient
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentProfileBinding
+
+    private var user: UserModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+    ): View {
+        binding = FragmentProfileBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        with(binding) {
+            user = RetrofitClient.user
+            btnAction.setOnClickListener {
+                if (user == null) {
+                    val username = inputUsername.text.toString().trim()
+                    val password = inputPassword.text.toString().trim()
+                    login(username, password)
+                } else {
+                    logout()
                 }
             }
+            setProfile()
+        }
+    }
+
+    private fun logout() {
+        try {
+            with(RetrofitClient) {
+                token = ""
+                user = null
+            }
+            user = null
+        } catch (ex: Exception) {
+            throw ex
+        }
+    }
+
+    private fun login(username: String, password: String) {
+        try {
+            lifecycleScope.launch {
+                with(RetrofitClient) {
+                    val response = service.login(LoginRequest(username, password))
+                    if (response.isSuccessful) {
+                        response.body()?.let {
+                            user = it.user
+                            token = it.token
+                            this@ProfileFragment.user = it.user
+                            setProfile()
+                        }
+                    } else {
+                        Toast.makeText(context, "Invalid Credentials", Toast.LENGTH_SHORT).show()
+                        Log.d(
+                            "Book API Error",
+                            "login: ${response.message()} | ${response.errorBody()}"
+                        )
+                    }
+                }
+            }
+        } catch (ex: Exception) {
+            throw ex
+        }
+    }
+
+    private fun setProfile() {
+        try {
+            with(binding) {
+                if (user == null) {
+                    layoutUsername.visibility = View.VISIBLE
+                    layoutPassword.visibility = View.VISIBLE
+                    tVUsername.visibility = View.INVISIBLE
+                    tVUsername.visibility = View.INVISIBLE
+                    iVProfile.visibility = View.INVISIBLE
+                } else {
+                    layoutUsername.visibility = View.GONE
+                    layoutPassword.visibility = View.GONE
+                    tVUsername.visibility = View.VISIBLE
+                    tVUsername.visibility = View.VISIBLE
+                    iVProfile.visibility = View.VISIBLE
+                    tvFullName.text = user?.fullName
+                    tVUsername.text = user?.username
+                    this@ProfileFragment.context?.let {
+                        Glide.with(it)
+                            .load("${RetrofitClient.BASE_URL}${user!!.imageProfile}")
+                            .fitCenter()
+                            .into(iVProfile)
+                    }
+                }
+            }
+        } catch (ex: Exception) {
+            throw ex
+        }
     }
 }

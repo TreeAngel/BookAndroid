@@ -35,6 +35,8 @@ class HomeFragment : Fragment() {
     private var books: ArrayList<BookModel> = arrayListOf()
     private var tempBooks: ArrayList<BookModel> = arrayListOf()
 
+    private var selectedGenre: Int = -1
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,8 +52,6 @@ class HomeFragment : Fragment() {
             setupGenreAdapter()
             setupBookAdapter()
             getGenres()
-            getWishlist()
-            getBooks(null)
             iBCart.setOnClickListener {
                 context?.startActivity(
                     Intent(
@@ -79,13 +79,17 @@ class HomeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         with(binding) {
-            if (RetrofitClient.cart.isNotEmpty()) {
-                tVCartNum.visibility = View.VISIBLE
-                tVCartNum.text = RetrofitClient.cart.size.toString()
-            } else {
-                tVCartNum.visibility = View.INVISIBLE
-                tVCartNum.text = "0"
+            if (RetrofitClient.token.isNotEmpty()) {
+                getWishlist()
+                if (RetrofitClient.cart.isNotEmpty()) {
+                    tVCartNum.visibility = View.VISIBLE
+                    tVCartNum.text = RetrofitClient.cart.size.toString()
+                } else {
+                    tVCartNum.visibility = View.INVISIBLE
+                    tVCartNum.text = "0"
+                }
             }
+            getBooks(genres[selectedGenre].name)
         }
     }
 
@@ -95,7 +99,12 @@ class HomeFragment : Fragment() {
                 getBooks(genre.name)
                 genreAdapter.selectedBtn = index
                 genreAdapter.notifyDataSetChanged()
+            } else {
+                getBooks(null)
+                genreAdapter.selectedBtn = -1
+                genreAdapter.notifyDataSetChanged()
             }
+            selectedGenre = index
         }
         adapter = genreAdapter
         genreAdapter.genres = genres
@@ -112,8 +121,9 @@ class HomeFragment : Fragment() {
                 )
             },
             addToWishlist = { item ->
-                if (wishlist.any { it.book.id == item.id }) {
-                    removeWishlist(item.id)
+                val wishlistItem = wishlist.find { it.book.id == item.id }
+                if (wishlistItem != null) {
+                    removeWishlist(wishlistItem.id)
                 } else {
                     addWishlist(item.id)
                 }

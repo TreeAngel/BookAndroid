@@ -13,7 +13,7 @@ class GenreAdapter(val onClick: (GenreModel, Int) -> Unit) :
     RecyclerView.Adapter<GenreAdapter.ViewHolder>() {
     class ViewHolder(val binding: ItemButtonBinding) : RecyclerView.ViewHolder(binding.root)
 
-    var selectedBtn = 0
+    var selectedBtn = -1
 
     private val diffUtil = object : DiffUtil.ItemCallback<GenreModel>() {
         override fun areItemsTheSame(oldItem: GenreModel, newItem: GenreModel): Boolean {
