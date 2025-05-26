@@ -6,7 +6,6 @@
     <string-array name="wishlist_sort">
         <item>Name</item>
         <item>Price</item>
-        <item>Publish Date</item>
     </string-array>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vehicula, justo ac faucibus aliquam, velit odio semper ipsum, at feugiat ligula leo eget purus. Vivamus eget maximus diam. Nunc et erat at elit posuere varius. Vestibulum ac neque iaculis, aliquet purus a, tincidunt metus. Etiam vitae mi venenatis, mollis leo et, sollicitudin dolor. In hac habitasse platea dictumst. Sed nisi risus, hendrerit a egestas at, fermentum eu magna. Praesent sit amet risus id turpis ultricies ultrices. Sed ut dolor risus. Sed nunc turpis, vehicula a nisi in, feugiat vulputate tellus. Suspendisse potenti. Etiam dapibus commodo libero ut efficitur. Etiam accumsan orci in orci feugiat ornare. In vestibulum nisi eget orci lobortis mollis.</string>
 </resources>

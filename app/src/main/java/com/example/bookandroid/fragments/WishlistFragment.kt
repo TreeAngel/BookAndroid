@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +26,6 @@ class WishlistFragment : Fragment() {
 
     private lateinit var bookAdapter: BookAdapter
 
-    private var wishlist: ArrayList<WishlistModel> = arrayListOf()
     private var books: ArrayList<BookModel> = arrayListOf()
     private var tempBooks: ArrayList<BookModel> = arrayListOf()
 
@@ -42,7 +42,13 @@ class WishlistFragment : Fragment() {
         with(binding) {
             progressBar.visibility = View.VISIBLE
             setupBookAdapter()
-            getWishlist()
+            if (RetrofitClient.token.isNotEmpty()) {
+                getWishlist()
+            } else {
+                rViewBooks.visibility = View.GONE
+                sSort.visibility = View.GONE
+                tVNotLogin.visibility = View.VISIBLE
+            }
             sSort.apply {
                 adapter = ArrayAdapter.createFromResource(
                     context,
@@ -51,22 +57,28 @@ class WishlistFragment : Fragment() {
                 ).also { aAdapter ->
                     aAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 }
-                when (selectedItem.toString().lowercase().trim()) {
-                    "name" -> {
-                        tempBooks.clear()
-                        tempBooks.addAll(books.sortedBy { it.name })
-                        bookAdapter.notifyDataSetChanged()
+                onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        when (selectedItem.toString().lowercase().trim()) {
+                            "name" -> {
+                                tempBooks.sortBy { it.name }
+                                bookAdapter.notifyDataSetChanged()
+                            }
+
+                            "price" -> {
+                                tempBooks.sortBy { it.price }
+                                bookAdapter.notifyDataSetChanged()
+                            }
+                        }
                     }
 
-                    "price" -> {
-                        tempBooks.clear()
-                        tempBooks.addAll(books.sortedBy { it.price })
-                        bookAdapter.notifyDataSetChanged()
-                    }
-
-                    "publish date" -> {
-                        tempBooks.clear()
-                        tempBooks.addAll(books.sortedBy { it.publishDate })
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        tempBooks = books
                         bookAdapter.notifyDataSetChanged()
                     }
                 }
@@ -75,17 +87,40 @@ class WishlistFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        with(binding) {
+            if (RetrofitClient.token.isNotEmpty()) {
+                getWishlist()
+                tVNotLogin.visibility = View.GONE
+                if (RetrofitClient.wishlist.isEmpty()) {
+                    sSort.visibility = View.INVISIBLE
+                    rViewBooks.visibility = View.GONE
+                    iVEmpty.visibility = View.VISIBLE
+                } else {
+                    sSort.visibility = View.VISIBLE
+                    rViewBooks.visibility = View.VISIBLE
+                    iVEmpty.visibility = View.GONE
+                }
+            } else {
+                sSort.visibility = View.GONE
+                rViewBooks.visibility = View.GONE
+                tVNotLogin.visibility = View.VISIBLE
+            }
+        }
+    }
+
     private fun setupBookAdapter() = binding.rViewBooks.apply {
         bookAdapter = BookAdapter(
             onClick = { item ->
-                context.startActivity(
+                startActivity(
                     Intent(context, BookDetailActivity::class.java).putExtra(
                         "id", item.id
                     )
                 )
             },
             addToWishlist = { item ->
-                val wishlistItem = wishlist.find { it.book.id == item.id }
+                val wishlistItem = RetrofitClient.wishlist.find { it.book.id == item.id }
                 if (wishlistItem != null) {
                     removeWishlist(wishlistId = wishlistItem.id, bookId = item.id)
                 } else {
@@ -94,6 +129,7 @@ class WishlistFragment : Fragment() {
             }
         )
         adapter = bookAdapter
+        bookAdapter.wishlist = RetrofitClient.wishlist
         bookAdapter.books = tempBooks
     }
 

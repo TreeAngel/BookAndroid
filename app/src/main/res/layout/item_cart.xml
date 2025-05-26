@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="140dp">
+
+    <ImageView
+        android:id="@+id/iVCover"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerInside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/blank_book_cover" />
+
+    <TextView
+        android:id="@+id/tVPublisher"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="BookPublisherOrAuthor"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toTopOf="@+id/tVBookPrice"
+        app:layout_constraintEnd_toEndOf="@+id/tVBookName"
+        app:layout_constraintStart_toStartOf="@+id/tVBookName"
+        app:layout_constraintTop_toBottomOf="@+id/tVBookName" />
+
+    <TextView
+        android:id="@+id/tVBookName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:maxLines="2"
+        android:text="Book namedddddddddddddddddddddd"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iVCover"
+        app:layout_constraintTop_toTopOf="@+id/iVCover" />
+
+    <TextView
+        android:id="@+id/tVBookPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:singleLine="true"
+        android:text="Rp. 10.000.000.000"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/iVCover"
+        app:layout_constraintEnd_toEndOf="@+id/tVBookName"
+        app:layout_constraintStart_toStartOf="@+id/tVBookName" />
+
+    <ImageButton
+        android:id="@+id/iBAdd"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/background_rounded"
+        app:layout_constraintBottom_toBottomOf="@+id/tVQty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tVQty"
+        app:srcCompat="@drawable/add" />
+
+    <ImageButton
+        android:id="@+id/iBRemove"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/background_rounded"
+        app:layout_constraintBottom_toBottomOf="@+id/tVQty"
+        app:layout_constraintEnd_toStartOf="@+id/tVQty"
+        app:layout_constraintTop_toTopOf="@+id/tVQty"
+        app:srcCompat="@drawable/remove" />
+
+    <ImageButton
+        android:id="@+id/iBTrash"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/iBRemove"
+        app:layout_constraintEnd_toStartOf="@+id/iBRemove"
+        app:layout_constraintTop_toTopOf="@+id/iBRemove"
+        app:srcCompat="@drawable/trash" />
+
+    <TextView
+        android:id="@+id/tVQty"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="11dp"
+        android:text="1000"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iBAdd" />
+</androidx.constraintlayout.widget.ConstraintLayout>

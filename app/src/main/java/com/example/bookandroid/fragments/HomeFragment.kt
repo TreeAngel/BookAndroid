@@ -31,7 +31,6 @@ class HomeFragment : Fragment() {
     private lateinit var bookAdapter: BookAdapter
 
     private var genres: ArrayList<GenreModel> = arrayListOf()
-    private var wishlist: ArrayList<WishlistModel> = arrayListOf()
     private var books: ArrayList<BookModel> = arrayListOf()
     private var tempBooks: ArrayList<BookModel> = arrayListOf()
 
@@ -89,7 +88,11 @@ class HomeFragment : Fragment() {
                     tVCartNum.text = "0"
                 }
             }
-            getBooks(genres[selectedGenre].name)
+            if (selectedGenre < 0) {
+                getBooks(null)
+            } else {
+                getBooks(genres[selectedGenre].name)
+            }
         }
     }
 
@@ -113,7 +116,7 @@ class HomeFragment : Fragment() {
     private fun setupBookAdapter() = binding.rViewBooks.apply {
         bookAdapter = BookAdapter(
             onClick = { item ->
-                context.startActivity(
+                startActivity(
                     Intent(
                         context,
                         BookDetailActivity::class.java
@@ -121,7 +124,7 @@ class HomeFragment : Fragment() {
                 )
             },
             addToWishlist = { item ->
-                val wishlistItem = wishlist.find { it.book.id == item.id }
+                val wishlistItem = RetrofitClient.wishlist.find { it.book.id == item.id }
                 if (wishlistItem != null) {
                     removeWishlist(wishlistItem.id)
                 } else {
@@ -130,7 +133,7 @@ class HomeFragment : Fragment() {
             }
         )
         adapter = bookAdapter
-        bookAdapter.wishlist = wishlist
+        bookAdapter.wishlist = RetrofitClient.wishlist
         bookAdapter.books = tempBooks
     }
 
@@ -233,6 +236,8 @@ class HomeFragment : Fragment() {
                                 it.message,
                                 Toast.LENGTH_SHORT
                             ).show()
+                            getWishlist()
+                            bookAdapter.notifyDataSetChanged()
                         }
                     } else {
                         Toast.makeText(

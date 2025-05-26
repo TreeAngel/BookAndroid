@@ -11,6 +11,8 @@ import com.example.bookandroid.databinding.ItemBookBinding
 import com.example.bookandroid.models.BookModel
 import com.example.bookandroid.models.WishlistModel
 import com.example.bookandroid.services.RetrofitClient
+import java.text.NumberFormat
+import java.util.Locale
 
 class BookAdapter(
     val onClick: (BookModel) -> Unit,
@@ -65,7 +67,7 @@ class BookAdapter(
             val book = books[position]
             tVBookName.text = book.name
             tVPublisher.text = book.publisher
-            tVBookPrice.text = book.price.toString()
+            tVBookPrice.text = formatCurrency(book.price)
             Glide.with(root.context)
                 .load("${RetrofitClient.BASE_URL}${book.imageCover}")
                 .centerInside()
@@ -78,5 +80,9 @@ class BookAdapter(
                 iBWishlist.imageTintList = root.context.getColorStateList(R.color.accent)
             }
         }
+    }
+
+    private fun formatCurrency(price: Int, locale: Locale = Locale("id", "ID")): String {
+        return NumberFormat.getCurrencyInstance(locale).format(price)
     }
 }

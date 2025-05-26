@@ -24,7 +24,7 @@
             app:srcCompat="@drawable/heart" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iVCover"
             android:layout_width="0dp"
             android:layout_height="300dp"
             android:scaleType="fitCenter"
@@ -46,7 +46,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/iBWishlist"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toBottomOf="@+id/iVCover" />
 
         <TextView
             android:id="@+id/tVBookPublisher"
@@ -103,22 +103,11 @@
             android:id="@+id/tVBookDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLines="4"
-            android:text="@string/lorem"
             android:ellipsize="end"
+            android:text="@string/lorem"
             app:layout_constraintEnd_toEndOf="@+id/tVBookPrice"
             app:layout_constraintStart_toStartOf="@+id/tVBookPrice"
             app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Read More"
-            android:textColor="#2196F3"
-            android:textStyle="bold"
-
-            app:layout_constraintEnd_toEndOf="@+id/tVBookDescription"
-            app:layout_constraintTop_toBottomOf="@+id/tVBookDescription" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

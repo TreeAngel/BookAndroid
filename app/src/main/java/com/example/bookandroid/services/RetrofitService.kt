@@ -10,6 +10,7 @@ import com.example.bookandroid.models.response.GeneralResponse
 import com.example.bookandroid.models.response.GetBookResponse
 import com.example.bookandroid.models.response.GetBooksResponse
 import com.example.bookandroid.models.response.GetGenresResponse
+import com.example.bookandroid.models.response.GetProfileResponse
 import com.example.bookandroid.models.response.GetTransactionDetailResponse
 import com.example.bookandroid.models.response.GetTransactionsResponse
 import com.example.bookandroid.models.response.GetWishlistResponse
@@ -27,7 +28,7 @@ interface RetrofitService {
     suspend fun register(@Body request: RegisterRequest): Response<AuthResponse>
 
     @GET("auth/me")
-    suspend fun getProfile(@Header("Authorization") token: String = RetrofitClient.token): Response<UserModel>
+    suspend fun getProfile(@Header("Authorization") token: String = RetrofitClient.token): Response<GetProfileResponse>
 
     @GET("book/genres")
     suspend fun getGenres(): Response<GetGenresResponse>

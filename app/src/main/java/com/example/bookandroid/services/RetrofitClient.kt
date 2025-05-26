@@ -2,6 +2,7 @@ package com.example.bookandroid.services
 
 import com.example.bookandroid.models.TransactionItemModel
 import com.example.bookandroid.models.UserModel
+import com.example.bookandroid.models.WishlistModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -12,6 +13,7 @@ object RetrofitClient {
     var user: UserModel? = null
 
     var cart: ArrayList<TransactionItemModel> = arrayListOf()
+    var wishlist: ArrayList<WishlistModel> = arrayListOf()
 
     val service: RetrofitService by lazy {
         Retrofit.Builder()

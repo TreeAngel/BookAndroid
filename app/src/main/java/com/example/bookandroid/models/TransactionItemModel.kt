@@ -10,5 +10,10 @@ data class TransactionItemModel(
     @SerializedName("bookId")
     val bookId: Int,
     @SerializedName("qty")
-    val qty: Int
+    var qty: Int,
+    val bookName: String,
+    val bookPublisher: String,
+    val price: Int,
+    var subTotal: Int = qty * price,
+    val imageCover: String
 ) : Parcelable

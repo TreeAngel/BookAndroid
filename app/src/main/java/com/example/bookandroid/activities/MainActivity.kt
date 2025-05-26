@@ -12,6 +12,7 @@ import com.example.bookandroid.databinding.ActivityMainBinding
 import com.example.bookandroid.fragments.HomeFragment
 import com.example.bookandroid.fragments.ProfileFragment
 import com.example.bookandroid.fragments.WishlistFragment
+import com.example.bookandroid.services.UserSession
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        UserSession.checkSession(this@MainActivity)
         homeFragment = HomeFragment()
         wishlistFragment = WishlistFragment()
         profileFragment = ProfileFragment()
@@ -58,7 +60,6 @@ class MainActivity : AppCompatActivity() {
     private fun changeFragment(fragment: Fragment) {
         supportFragmentManager.commit {
             setReorderingAllowed(true)
-            setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
             replace(binding.navView.id, fragment)
             addToBackStack(null)
         }
